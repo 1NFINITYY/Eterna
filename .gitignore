@@ -1,0 +1,60 @@
+# ==============================
+# Dependencies
+# ==============================
+node_modules/
+.pnp/
+.pnp.js
+
+# ==============================
+# Build outputs
+# ==============================
+dist/
+build/
+.out/
+.next/
+
+# ==============================
+# Environment files (NEVER COMMIT)
+# ==============================
+.env
+.env.*
+!.env.example
+
+# ==============================
+# Logs
+# ==============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==============================
+# Cache / tooling
+# ==============================
+.cache/
+.eslintcache
+tsconfig.tsbuildinfo
+coverage/
+
+# ==============================
+# Runtime data
+# ==============================
+*.pid
+*.seed
+*.pid.lock
+
+# ==============================
+# OS / Editor
+# ==============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ==============================
+# Misc
+# ==============================
+*.swp
+*.swo
