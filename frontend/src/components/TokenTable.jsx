@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 
-export default function TokenTable({ tokens, setTokens }) {
+export default function TokenTable({
+  tokens,
+  setTokens,
+  timePeriod
+}) {
   if (!tokens || tokens.length === 0) {
     return (
       <div className="text-center text-gray-400 mt-10">
@@ -11,6 +15,8 @@ export default function TokenTable({ tokens, setTokens }) {
 
   // 🔥 Clear flash after animation
   useEffect(() => {
+    if (!setTokens) return;
+
     const timeout = setTimeout(() => {
       setTokens(prev =>
         prev.map(t => ({
@@ -33,8 +39,12 @@ export default function TokenTable({ tokens, setTokens }) {
             <th className="px-4 py-3">Price</th>
             <th className="px-4 py-3">Market Cap</th>
             <th className="px-4 py-3">Liquidity</th>
-            <th className="px-4 py-3">Volume (24h)</th>
-            <th className="px-4 py-3">1h %</th>
+            <th className="px-4 py-3">
+              Volume ({timePeriod})
+            </th>
+            <th className="px-4 py-3">
+              Change ({timePeriod})
+            </th>
             <th className="px-4 py-3">DEX</th>
           </tr>
         </thead>
@@ -85,20 +95,26 @@ export default function TokenTable({ tokens, setTokens }) {
                 {formatNumber(token.liquidity_usd)}
               </td>
 
-              {/* Volume */}
+              {/* ✅ NORMALIZED Volume (safe) */}
               <td className="px-4 py-3">
-                {formatNumber(token.volume_24h)}
+                {token.volume == null
+                  ? "—"
+                  : formatNumber(token.volume)}
               </td>
 
-              {/* 1h Change */}
+              {/* ✅ NORMALIZED Price Change (safe) */}
               <td
                 className={`px-4 py-3 font-semibold ${
-                  token.price_change_1h >= 0
+                  token.price_change == null
+                    ? "text-gray-400"
+                    : token.price_change >= 0
                     ? "text-green-400"
                     : "text-red-400"
                 }`}
               >
-                {token.price_change_1h?.toFixed(2)}%
+                {token.price_change == null
+                  ? "—"
+                  : `${token.price_change.toFixed(2)}%`}
               </td>
 
               {/* Protocol */}
@@ -116,7 +132,7 @@ export default function TokenTable({ tokens, setTokens }) {
 /* -------- helpers -------- */
 
 function formatNumber(value) {
-  if (!value || value === 0) return "-";
+  if (value == null) return "-";
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
   if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
   if (value >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;

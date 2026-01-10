@@ -54,13 +54,21 @@ export async function aggregateTokens(
     const existing = map.get(address);
     if (existing && existing.liquidity_usd > liquidity) return;
 
-    const volume_1h = pair.volume?.h1 ?? 0;
-    const volume_24h = pair.volume?.h24 ?? 0;
-    const volume_7d = pair.volume?.h7 ?? 0;
+    const volume_1h = pair.volume?.h1 ?? null;
+    const volume_24h = pair.volume?.h24 ?? null;
+    const volume_7d =
+      pair.volume?.h7 ??
+      pair.volume?.h24 ??
+      pair.volume?.h1 ??
+      null;
 
-    const price_change_1h = pair.priceChange?.h1 ?? 0;
-    const price_change_24h = pair.priceChange?.h24 ?? 0;
-    const price_change_7d = pair.priceChange?.h7 ?? 0;
+    const price_change_1h = pair.priceChange?.h1 ?? null;
+    const price_change_24h = pair.priceChange?.h24 ?? null;
+    const price_change_7d =
+      pair.priceChange?.h7 ??
+      pair.priceChange?.h24 ??
+      pair.priceChange?.h1 ??
+      null;
 
     map.set(address, {
       token_address: address,
@@ -110,14 +118,14 @@ export async function aggregateTokens(
   // -----------------------------
   tokens.sort((a, b) => {
     const scoreA =
-      a.volume_1h * 0.6 +
-      Math.abs(a.price_change_1h) * 0.25 +
+      (a.volume_1h ?? 0) * 0.6 +
+      Math.abs(a.price_change_1h ?? 0) * 0.25 +
       Math.log10(a.liquidity_usd + 1) * 15;
 
     const scoreB =
-      b.volume_1h * 0.6 +
-      Math.abs(b.price_change_1h) * 0.25 +
-      Math.log10(a.liquidity_usd + 1) * 15;
+      (b.volume_1h ?? 0) * 0.6 +
+      Math.abs(b.price_change_1h ?? 0) * 0.25 +
+      Math.log10(b.liquidity_usd + 1) * 15;
 
     return scoreB - scoreA;
   });

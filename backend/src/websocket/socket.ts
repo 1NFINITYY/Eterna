@@ -18,5 +18,5 @@ export function initSocket(server: any) {
   // 🔥 Run price tracker every 5 seconds
   setInterval(() => {
     trackPriceChanges(io);
-  }, 2000);
+  }, 5000);
 }
