@@ -127,6 +127,7 @@ The current frontend focuses on **real-time token discovery and comparison**, no
 
 ## Project Structure
 
+```text
 root/
 ├── frontend/
 │   ├── src/
@@ -143,6 +144,7 @@ root/
 │   └── package.json
 │
 └── .gitignore
+```
 
 ---
 
