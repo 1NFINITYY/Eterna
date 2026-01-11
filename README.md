@@ -2,7 +2,7 @@ Eterna – Real-Time Crypto Token Discovery Platform
 
 Eterna is a full-stack crypto token discovery platform that aggregates and merges live token data from multiple sources, supports real-time updates, advanced sorting, caching, and multiple time-period views. The project is designed with production-grade architecture and realistic market-data handling.
 
-Features
+Features---
 
 Token Discovery and Data Aggregation
 Token data is aggregated from two primary sources: Jupiter and DexScreener. Jupiter provides a verified and trusted list of tokens, while DexScreener provides real-time market data such as price, volume, liquidity, and price changes. The backend merges these sources to create a clean and reliable token discovery feed.
@@ -28,7 +28,7 @@ Redis is used to cache aggregated token results per page and per time period. Th
 Production-Grade Data Handling
 The backend normalizes all market data before sending it to the frontend. Missing or unavailable data is explicitly represented as null and displayed in the UI as “—” instead of fake zero values.
 
-Tech Stack
+Tech Stack---
 
 Frontend
 React (Vite)
@@ -45,16 +45,16 @@ DexScreener API
 Jupiter API
 Deployed as a Render Web Service
 
-Live URLs
+Live URLs---
 
-Frontend
+Frontend-
 https://eterna-umber.vercel.app/
 
-Backend API
+Backend API-
 https://eterna-backend-o1rp.onrender.com
 
 
-Project Structure
+Project Structure---
 
 root
   frontend
@@ -71,7 +71,7 @@ root
     package.json
   .gitignore
 
-Environment Variables
+Environment Variables-
 
 Frontend (frontend/.env)
 VITE_BACKEND_URL=https://<your-backend>.onrender.com
@@ -115,9 +115,6 @@ Query parameters
 page – pagination
 timePeriod – 1h, 24h, or 7d
 
-Health check
-GET /health
-Returns a simple status response indicating the backend is running.
 
 Key Engineering Decisions
 
