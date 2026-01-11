@@ -170,10 +170,10 @@ cd <repo-name>
 
 
 ### Backend setup
--cd backend
--npm install
--cp .env.example .env
--npm run dev
+- cd backend
+- npm install
+- cp .env.example .env
+- npm run dev
 
 Backend runs on:
 http://localhost:4000
@@ -181,10 +181,10 @@ http://localhost:4000
 
 
 ### Frontend setup
--cd frontend
--npm install
--cp .env.example .env
--npm run dev
+- cd frontend
+- npm install
+- cp .env.example .env
+- npm run dev
 
 
 Frontend runs on:
