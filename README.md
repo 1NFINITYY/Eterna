@@ -1,141 +1,236 @@
-Eterna – Real-Time Crypto Token Discovery Platform
+# Eterna – Real-Time Crypto Token Discovery Platform
 
-Eterna is a full-stack crypto token discovery platform that aggregates and merges live token data from multiple sources, supports real-time updates, advanced sorting, caching, and multiple time-period views. The project is designed with production-grade architecture and realistic market-data handling.
+Eterna is a full-stack crypto token discovery platform that aggregates, normalizes, and serves real-time token market data from multiple sources. The project focuses on clean backend aggregation, realistic market-data handling, caching, and real-time delivery rather than simple API forwarding.
 
-Features---
+The architecture is designed to simulate production-grade data pipelines used in real-world crypto analytics platforms.
 
-Token Discovery and Data Aggregation
-Token data is aggregated from two primary sources: Jupiter and DexScreener. Jupiter provides a verified and trusted list of tokens, while DexScreener provides real-time market data such as price, volume, liquidity, and price changes. The backend merges these sources to create a clean and reliable token discovery feed.
+---
 
-How Jupiter and DexScreener Are Merged
-The backend first fetches a list of verified tokens from Jupiter to ensure token authenticity. In parallel, a curated list of seed tokens is also used to guarantee coverage of important and trending assets.
-For each Jupiter token address and each seed token, the backend queries DexScreener to fetch all available trading pairs.
-All DexScreener pairs are then merged into a single collection and deduplicated by token address. If multiple pairs exist for the same token, the pair with the highest liquidity is selected. This ensures that users always see the most relevant and liquid market for each token.
-After deduplication, token metrics are normalized into consistent fields so the frontend does not need to understand raw DexScreener structures.
+## Implemented Features
 
-Time-Period Filtering
-The platform supports 1h, 24h, and 7d views. Market metrics such as volume and price change are dynamically selected based on the chosen time period. When 7d data is unavailable from DexScreener, the backend applies a fallback strategy (7d → 24h → 1h) to avoid misleading zero values.
+### Token Discovery and Data Aggregation
+- Token data is aggregated from **Jupiter** and **DexScreener**
+- Jupiter provides a verified and trusted token list
+- DexScreener provides real-time market data such as:
+  - Price
+  - Volume
+  - Liquidity
+  - Market capitalization
+  - Price changes
 
-Advanced Sorting
-Tokens can be sorted by volume, price, market cap, and liquidity. Sorting respects the selected time period and always operates on normalized backend fields.
+The backend merges these sources into a unified and reliable token discovery feed.
 
-Real-Time Updates
-Live token updates are delivered via WebSockets. Real-time updates are optimized for short-term (1h) views to maintain responsiveness without overwhelming the client.
+---
 
-Caching with Redis
-Redis is used to cache aggregated token results per page and per time period. This significantly reduces repeated calls to external APIs and improves overall response times.
+### How Jupiter and DexScreener Are Merged
 
-Production-Grade Data Handling
-The backend normalizes all market data before sending it to the frontend. Missing or unavailable data is explicitly represented as null and displayed in the UI as “—” instead of fake zero values.
+1. The backend fetches a verified token list from Jupiter to ensure authenticity
+2. A curated list of seed tokens is included to guarantee coverage of important and trending assets
+3. For each Jupiter token and seed token address:
+   - DexScreener is queried for all available trading pairs
+4. All trading pairs are merged into a single collection
+5. Tokens are deduplicated by **token address**
+6. If multiple pairs exist for the same token:
+   - The pair with the **highest liquidity** is selected
+7. Final token data is normalized into consistent fields before being sent to the frontend
 
-Tech Stack---
+This ensures users always see the most relevant and liquid market for each token.
 
-Frontend
-React (Vite)
-Tailwind CSS
-Fetch API
-Deployed as a Render Static Site
+---
 
-Backend
-Node.js with Express
-TypeScript
-Socket.IO
-Redis
-DexScreener API
-Jupiter API
-Deployed as a Render Web Service
+### Time-Period Support
 
-Live URLs---
-
-Frontend-
-https://eterna-umber.vercel.app/
-
-Backend API-
-https://eterna-backend-o1rp.onrender.com
+- Backend supports **1h, 24h, and 7d** market metrics
+- Metrics such as volume and price change are selected dynamically based on the requested time period
+- When 7d data is unavailable, a fallback strategy is applied:
 
 
-Project Structure---
+This avoids misleading zero values and preserves realistic market behavior.
+
+---
+
+### Advanced Sorting
+- Tokens can be sorted by:
+  - Volume
+  - Price
+  - Market capitalization
+  - Liquidity
+- Sorting respects the selected time period
+- Sorting operates entirely on normalized backend fields
+
+---
+
+### Real-Time Updates
+- Live token updates are delivered using **WebSockets**
+- Optimized for short-term (1h) market views
+- Prevents excessive client updates while maintaining responsiveness
+
+---
+
+### Caching with Redis
+- Aggregated token results are cached using Redis
+- Cache keys include:
+  - Page number
+  - Time period
+- Significantly reduces repeated external API calls
+- Improves response times and backend stability
+
+---
+
+### Production-Grade Data Handling
+- All market data is normalized on the backend
+- Missing or unavailable values are explicitly set to `null`
+- The frontend displays missing data as `—` instead of fake zero values
+- Frontend logic remains simple and predictable
+
+---
+
+## Current UI Scope
+
+The current frontend focuses on **real-time token discovery and comparison**, not deep analytics.
+
+### Implemented in UI
+- Token discovery feed
+- Live price, volume, liquidity, and price-change display
+- Real-time updates for short-term views
+- Pagination-based browsing
+- Backend-normalized data rendering
+
+### Backend-Ready / Planned UI Features
+- Persistent filters and sorting via URL
+- Ascending and descending sort toggles
+- Visual indicators for fallback time-period data
+- Token detail pages
+- Authentication and user watchlists
+
+---
+
+## Tech Stack
+
+### Frontend
+- React (Vite)
+- Tailwind CSS
+- Fetch API
+- Deployed as a **Render Static Site**
+
+### Backend
+- Node.js
+- Express
+- TypeScript
+- Socket.IO
+- Redis
+- DexScreener API
+- Jupiter API
+- Deployed as a **Render Web Service**
+
+---
+
+## Project Structure
 
 root
-  frontend
-    src
-    .env.example
-    package.json
-  backend
-    src
-      routes
-      services
-      websocket
-      server.ts
-    .env.example
-    package.json
-  .gitignore
+├── frontend
+│ ├── src
+│ ├── .env.example
+│ └── package.json
+│
+├── backend
+│ ├── src
+│ │ ├── routes
+│ │ ├── services
+│ │ ├── websocket
+│ │ └── server.ts
+│ ├── .env.example
+│ └── package.json
+│
+└── .gitignore
+---
 
-Environment Variables-
+## Environment Variables
 
-Frontend (frontend/.env)
+### Frontend (`frontend/.env`)
 VITE_BACKEND_URL=https://<your-backend>.onrender.com
 
-Backend (backend/.env)
+### Backend (`backend/.env`)
 PORT=4000
 REDIS_URL=redis://<render-redis-url>
 JUPITER_API_KEY=your_api_key_here
 
-Do not commit .env files. Only commit .env.example.
 
-Running Locally
+**Important:**  
+Do not commit `.env` files. Only commit `.env.example`.
 
-Clone the repository
+---
+
+## Running Locally
+
+### Clone the repository
 git clone https://github.com/
 <your-username>/<repo-name>.git
 cd <repo-name>
 
-Backend setup
-cd backend
-npm install
-cp .env.example .env
-npm run dev
 
-Backend runs on http://localhost:4000
+### Backend setup
+-cd backend
+-npm install
+-cp .env.example .env
+-npm run dev
 
-Frontend setup
-cd frontend
-npm install
-cp .env.example .env
-npm run dev
+Backend runs on:
+http://localhost:4000
 
-Frontend runs on http://localhost:5173
 
-API Endpoints
 
-Fetch tokens
+### Frontend setup
+-cd frontend
+-npm install
+-cp .env.example .env
+-npm run dev
+
+
+Frontend runs on:
+http://localhost:5173
+
+
+
+---
+
+## API Endpoints
+
+### Fetch tokens
 GET /api/tokens?page=1&timePeriod=24h
 
-Query parameters
-page – pagination
-timePeriod – 1h, 24h, or 7d
 
+### Query Parameters
+- `page` – pagination
+- `timePeriod` – `1h`, `24h`, or `7d`
 
-Key Engineering Decisions
+---
 
-DexScreener is used for real-time market data, while Jupiter is used for token verification and discovery.
-Multiple data sources are merged and deduplicated by liquidity to ensure high-quality results.
-Redis cache keys include both page number and time period to avoid stale data.
-Backend normalization simplifies frontend logic and reduces UI bugs.
-Missing market data is handled explicitly instead of defaulting to zero.
+## Key Engineering Decisions
 
-Future Improvements
+- Jupiter is used for token verification and discovery
+- DexScreener is used for real-time market data
+- Liquidity-based deduplication ensures high-quality results
+- Redis cache keys include page number and time period to avoid stale data
+- Backend normalization reduces frontend complexity and UI bugs
+- Missing data is handled explicitly instead of defaulting to zero
 
-Persist filters and sorting in the URL.
-Support ascending and descending sorting.
-Display fallback badges for estimated 7d data.
-Add token detail pages.
-Implement authentication and user watchlists.
+---
 
-Author
+## Live URLs
 
-Anant Jain
-Computer Science and Engineering
+Frontend  
+https://eterna-umber.vercel.app/
+
+Backend API  
+https://eterna-backend-o1rp.onrender.com
+
+---
+
+## Author
+
+**Anant Jain**  
+Computer Science and Engineering  
 Full-Stack and Backend-Focused Developer
 
 If you like this project, feel free to star the repository on GitHub.
