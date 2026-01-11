@@ -127,22 +127,23 @@ The current frontend focuses on **real-time token discovery and comparison**, no
 
 ## Project Structure
 
-root
-├── frontend
-│ ├── src
-│ ├── .env.example
-│ └── package.json
+root/
+├── frontend/
+│   ├── src/
+│   ├── .env.example
+│   └── package.json
 │
-├── backend
-│ ├── src
-│ │ ├── routes
-│ │ ├── services
-│ │ ├── websocket
-│ │ └── server.ts
-│ ├── .env.example
-│ └── package.json
+├── backend/
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── websocket/
+│   │   └── server.ts
+│   ├── .env.example
+│   └── package.json
 │
 └── .gitignore
+
 ---
 
 ## Environment Variables
